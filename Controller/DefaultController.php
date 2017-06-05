@@ -47,7 +47,8 @@ class DefaultController extends Controller
     }
 
     private function getLogFile($fileName){
-        $path = __DIR__.'/../../../../var/logs/';
+        $fullPath = $this->get('kernel')->getRootDir();
+        $path = $fullPath.'/../var/logs/';
         $finder = new Finder();
         $finder->files()->in($path);
 
