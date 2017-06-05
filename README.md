@@ -4,7 +4,7 @@ Sometimes symfony does not display the exception in the browser, so you have to 
 Pretty annoying isn't ? Well `LogtrackerBundle` will make your life easier by displaying the details of the log file (dev.log and prod.log) in more elegant way with the possibility of filtering and searching inside the file.<br>
 `LogTrackerBunlde` helps you also to track any thrown exception in your project by sending real time email with the details of the exception.
 
-#Installation
+# Installation
 
 1. `composer require slimen/log-tracker`<br>
 2. Enable the bundle in AppKernel.php<br>
@@ -15,7 +15,7 @@ Pretty annoying isn't ? Well `LogtrackerBundle` will make your life easier by di
         prefix:   /logger
     ```
 
-#Usage
+# Usage
 1. To display `dev.log` got to `localhost:/YourProject/web/dev_app.php/logger/_dev`
 2. To display `prod.log` got to `localhost:/YourProject/web/dev_app.php/logger/_prod`
 3. To keep track of thrown exception you need to add this in your `config.yml` file:<br>
@@ -24,6 +24,5 @@ Pretty annoying isn't ? Well `LogtrackerBundle` will make your life easier by di
     log_tracker:
         app_name: 'Your app name'
         sender_mail: 'your_mail@company.com'
-        recipients: ['mail1@company.com', 'mail2@company.com'] {#you can add as much as you want of addresses#}
+        recipients: ['mail1@company.com', 'mail2@company.com'] #you can add as much as you want of addresses
     ```
-    
