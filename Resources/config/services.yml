@@ -1,0 +1,7 @@
+services:
+    log.tracker.exception_listener:
+        class: SBC\LogTrackerBundle\EventListener\ExceptionListener
+        public: true
+        arguments: ["@mailer","@service_container"]
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception }

@@ -1,0 +1,7 @@
+log_tracker_dev:
+    path:     /_dev
+    defaults: { _controller: LogTrackerBundle:Default:devLog }
+
+log_tracker_prod:
+    path:     /_prod
+    defaults: { _controller: LogTrackerBundle:Default:prodLog }

@@ -1,0 +1,168 @@
+<!doctype html>
+<!--[if lte IE 9]>
+<html class="lte-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!-->
+<html lang="en"> <!--<![endif]-->
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Remove Tap Highlight on Windows Phone IE -->
+    <meta name="msapplication-tap-highlight" content="no"/>
+
+    <link rel="icon" type="image/png" href="{{ asset('img/bug-xxl.png') }}">
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <style>
+        .logger{
+            padding: 10px; color: #fff
+        }
+    </style>
+
+</head>
+
+<body>
+<div class="container">
+    <div class="col s12 m7">
+        <div class="row">
+            <div class="input-field col s6">
+                <h2 class="header" style="float:left;">prod.log</h2>
+            </div>
+            <div class="input-field col s6" style="text-align: right;padding-top: 30px;">
+                <a href="{{ path('log_tracker_dev', {'clear': 'true'}) }}" id="clear" class="btn-floating btn-large waves-effect waves-light red tooltipped" data-position="bottom" data-delay="50" data-tooltip="Clear log file"><i class="material-icons">clear</i> Clear file</a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s12 m9">
+                <input value="" id="search" type="text" class="validate">
+                <label class="active" for="search">Search</label>
+            </div>
+            <div class="input-field col s12 m3">
+                <!-- Dropdown Trigger -->
+                <a class='dropdown-button btn' href="#" data-activates='dropdown1' style="margin-top: 10px;">Filter by status</a>
+
+                <!-- Dropdown Structure -->
+                <ul id='dropdown1' class='dropdown-content'>
+                    <li class="filter" data-search=""><a>ALL</a></li>
+                    <li class="filter" data-search="info"><a>INFO</a></li>
+                    <li class="filter" data-search="debug"><a>DEBUG</a></li>
+                    <li class="filter" data-search="error"><a>ERROR</a></li>
+                    <li class="filter" data-search="critical"><a>CRITICAL</a></li>
+                    <li class="filter" data-search="warning"><a>WARNING</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="logs">
+            {% for log in logs %}
+                <div class="card horizontal" style="word-break: break-all;">
+                    <div class="card-image logger {{ log.statusColor }}">
+                        <h5>{{ log.status }}</h5>
+                        <div>{{ log.logSource }}</div>
+                        <span>{{ log.dateLog|date('Y-m-d H:i:s') }}</span>
+                    </div>
+                    <div class="card-stacked">
+                        <div class="card-content">
+                            <div style="word-wrap : break-word;">{{ log.description }}</div>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <div style="text-align: center">The file is empty!</div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<!-- Compiled and minified JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/js/materialize.min.js"></script>
+<script>
+    var logs = [];
+    var _searchField, _clearBtn, _logList, _filter;
+    (function () {
+        $('.tooltipped').tooltip({delay: 50});
+
+        _searchField = $('#search');
+        _clearBtn = $('#clear');
+        _logList = $('.logs');
+        _filter = $('.filter');
+
+        {% for log in logs %}
+        object = jQuery.parseJSON("{{ log|json_encode()|escape('js') }}");
+        logs.push(object);
+//            console.log(logs);
+        {% endfor %}
+
+        _searchField.bind('keyup', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            var result = search($(this).val());
+            rebuildView(result);
+        });
+
+        _filter.on('click', function () {
+            var arg = $(this).attr('data-search');
+            var result = search(arg, true);
+            rebuildView(result);
+        })
+    })();
+
+    /**
+     * Search in the logs list
+     * @param arg
+     */
+    function search(arg, searchInStatus) {
+        searchInStatus = searchInStatus || false;
+        arg = arg.toLowerCase();
+        var result = [];
+        if(arg != ''){
+            $.each(logs, function(index, object) {
+                var description = object.description.toLowerCase();
+                var logSource = object.logSource.toLowerCase();
+                var status = object.status.toLowerCase();
+                if(searchInStatus){
+                    if(status.indexOf(arg) >= 0){
+                        result.push(object);
+                    }
+                }else{
+                    if(description.indexOf(arg) >= 0 || logSource.indexOf(arg) >= 0 || status.indexOf(arg) >= 0){
+                        result.push(object);
+                    }
+                }
+            });
+        }else{
+            result = logs;
+        }
+
+        return result;
+    }
+
+    function rebuildView(result) {
+        _logList.html('');
+        if(result.length != 0){
+            $.each(result, function(index, log) {
+                var bloc = `<div class="card horizontal" style="word-break: break-all;">
+                        <div class="card-image logger `+log.statusColor+`">
+                            <h5>`+log.status+`</h5>
+                            <div>`+log.logSource+`</div>
+                            <span>`+log.dateLog.date+`</span>
+                        </div>
+                        <div class="card-stacked">
+                            <div class="card-content">
+                                <div style="word-wrap : break-word;">`+log.description+`</div>
+                            </div>
+                        </div>
+                    </div>`;
+                _logList.append(bloc);
+            });
+        }else{
+            _logList.append('<div style="text-align: center">Nothing matches your search!</div>');
+        }
+
+    }
+
+</script>
+</body>
+</html>
