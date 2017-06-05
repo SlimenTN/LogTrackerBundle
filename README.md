@@ -6,7 +6,7 @@ Pretty annoying isn't ? Well `LogtrackerBundle` will make your life easier by di
 
 # Installation
 
-1. `composer require slimen/log-tracker 1.x-dev`<br>
+1. `composer require slimen/log-tracker dev-master`<br>
 2. Enable the bundle in AppKernel.php<br>
 3. Add this in `config/routing.yml`:<br>
     ```
