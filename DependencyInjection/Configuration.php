@@ -30,6 +30,7 @@ class Configuration implements ConfigurationInterface
             ->children()
                 ->scalarNode('app_name')->end()
                 ->scalarNode('sender_mail')->end()
+                ->scalarNode('handler_text')->end()
                 ->arrayNode('recipients')
                     ->info('List of mails that will receive a notification on the rise of any exception.')
                     ->prototype('scalar')->end()
