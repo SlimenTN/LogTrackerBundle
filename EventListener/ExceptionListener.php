@@ -29,7 +29,8 @@ class ExceptionListener
     {
         // You get the exception object from the received event
         $exception = $event->getException();
-        if(!$exception instanceof NotFoundHttpException){//---if it's not a not found exception catch it
+        $env = $this->container->getParameter('kernel.environment');
+        if($env == 'prod' && !$exception instanceof NotFoundHttpException){//---if it's prod environment and not a NotFoundException catch it
             $configuration = $this->container->getParameter('log_tracker');
             $sender = array($configuration['sender_mail'] => $configuration['app_name']);
             $recipients = $configuration['recipients'];
