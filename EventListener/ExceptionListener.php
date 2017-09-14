@@ -29,6 +29,7 @@ class ExceptionListener
     {
         // You get the exception object from the received event
         $exception = $event->getException();
+        
         $env = $this->container->getParameter('kernel.environment');
         if($env == 'prod' && !$exception instanceof NotFoundHttpException){//---if it's prod environment and not a NotFoundException catch it
             $configuration = $this->container->getParameter('log_tracker');
