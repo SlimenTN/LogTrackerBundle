@@ -29,23 +29,34 @@ class DefaultController extends Controller
             'logs' => $logs,
         ));
     }
-    
+
+    /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
     public function prodLogAction(Request $request){
         $logFile = $this->getLogFile('prod.log');
+        $logs = array();
 
         if($request->query->has('clear')){//---id clear param exist the delete file content
             file_put_contents($logFile, "");
             return $this->redirectToRoute('log_tracker_prod');
         }
 
-        $analyzer = new LogAnalyzer($logFile);
-        $logs = $analyzer->parse();
+        if($logFile != null){
+            $analyzer = new LogAnalyzer($logFile);
+            $logs = $analyzer->parse();
+        }
 
         return $this->render('@LogTracker/prod.html.twig', array(
             'logs' => $logs,
         ));
     }
 
+    /**
+     * @param $fileName
+     * @return null
+     */
     private function getLogFile($fileName){
         $fullPath = $this->get('kernel')->getRootDir();
         $path = $fullPath.'/../var/logs/';
