@@ -14,6 +14,7 @@ Pretty annoying isn't ? Well `LogtrackerBundle` will make your life easier by di
         resource: "@LogTrackerBundle/Resources/config/routing.yml"
         prefix:   /logger
     ```
+4. run `php bin/console asset:install`
 
 # Usage
 1. To display `dev.log` got to `localhost:/YourProject/web/dev_app.php/logger/_dev`
