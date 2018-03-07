@@ -28,6 +28,10 @@ Pretty annoying isn't ? Well `LogtrackerBundle` will make your life easier by di
         handler_text: 'Text will be displayed when LogTrackerBundle handle the error'
         recipients: ['mail1@company.com', 'mail2@company.com'] #you can add as much as you want of addresses
     ```
+### How it works
+In **production** mode `LogTrackerBundle` will catch any type of exception (except `NotFoundException` assuming that it will be handled to display **404 Not Found** page)
+and will display this view (Of course unless you override it):<br><br>
+![Default error catcher view](Resources/docs/images/error_catcher.png)
 
 ### Update of the version 1.2.0
 In this version you no longer need to add your custom text in the `config.yml` file
