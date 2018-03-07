@@ -9,7 +9,7 @@ Pretty annoying isn't ? Well `LogtrackerBundle` will make your life easier by di
 1. `composer require slimen/log-tracker`<br>
 2. Enable the bundle in AppKernel.php `new SBC\LogTrackerBundle\LogTrackerBundle(),`<br>
 3. Add this in `config/routing.yml`:<br>
-    ```
+    ```yaml
     log_trucker:
         resource: "@LogTrackerBundle/Resources/config/routing.yml"
         prefix:   /logger
@@ -19,7 +19,7 @@ Pretty annoying isn't ? Well `LogtrackerBundle` will make your life easier by di
 1. To display `dev.log` got to `localhost:/YourProject/web/dev_app.php/logger/_dev`
 2. To display `prod.log` got to `localhost:/YourProject/web/dev_app.php/logger/_prod`
 3. To keep track of thrown exception you need to add this in your `config.yml` file:<br>
-    ```
+    ```yaml
     # LogTracker Configuration
     log_tracker:
         app_name: 'Your app name'
