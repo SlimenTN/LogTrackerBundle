@@ -38,7 +38,7 @@ In this version you no longer need to add your custom text in the `config.yml` f
 in the `handler_text` option instead you can override the whole view and display any
 view you want by following [Symfony's override style](https://symfony.com/doc/3.4/templating/overriding.html)<br>
 To override the view just add a view called `error_catcher.html.twig` under the folder
-`app/Resources/LogTracker` and create the view you want to display for your users.
+`app/Resources/LogTracker/views/` and create the view you want to display for your users.
 
 ### License
 This project is under the [MIT license](LICENSE)
