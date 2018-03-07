@@ -8,7 +8,7 @@ use Symfony\Component\Finder\SplFileInfo;
  * Class LogAnalyzer
  * @package SBC\LogTrackerBundle\Components
  * Parse log file into Log object
- * Arnaout slimen <arnaout.slimen@sbc.tn>
+ * @author: Arnaout slimen <arnaout.slimen@sbc.tn>
  */
 class LogAnalyzer
 {

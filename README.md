@@ -24,6 +24,17 @@ Pretty annoying isn't ? Well `LogtrackerBundle` will make your life easier by di
     log_tracker:
         app_name: 'Your app name'
         sender_mail: 'your_mail@company.com'
+        # this option is removed in the version 1.2.0
         handler_text: 'Text will be displayed when LogTrackerBundle handle the error'
         recipients: ['mail1@company.com', 'mail2@company.com'] #you can add as much as you want of addresses
     ```
+
+### Update of the version 1.2.0
+In this version you no longer need to add your custom text in the `config.yml` file
+in the `handler_text` option instead you can override the whole view and display any
+view you want by following [Symfony's override style](https://symfony.com/doc/3.4/templating/overriding.html)<br>
+To override the view just add a view called `error_catcher.html.twig` under the folder
+`app/Resources/LogTracker` and create the view you want to display for your users.
+
+### License
+This project is under the [MIT license](LICENSE)
