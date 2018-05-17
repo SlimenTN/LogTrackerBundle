@@ -1,0 +1,11 @@
+<!doctype html>
+<html lang="fr">
+<body>
+    URL: <strong>{{ exception_url }}</strong><br><br>
+    {% if app.user %}
+    <strong>User:</strong> {{ app.user.username }}
+    {% endif %}
+    <strong>Content:</strong> {{ exception.message }}<br><br>
+    <strong>Trace:</strong> {{ exception.traceAsString }}
+</body>
+</html>

@@ -40,13 +40,16 @@ class ExceptionListener
 
             $subject = 'Exception has been thrown in "'.$configuration['app_name'].'" ';
 
-            $message = 'URL: <strong>'.$url.'</strong><br><br>
-                    Content: '.$exception->getMessage();
+            $content = $this->container->get('twig')->render('@LogTracker/mail_content.html.twig', array(
+                'exception_url' => $url,
+                'exception' => $exception,
+            ));
+
             $message = \Swift_Message::newInstance()
                 ->setSubject($subject)
                 ->setFrom($sender)
                 ->setTo($recipients)
-                ->setBody($message,
+                ->setBody($content,
                     'text/html'
                 )
             ;
@@ -62,7 +65,6 @@ class ExceptionListener
     }
 
     /**
-     * @param $handlerText
      * @return string
      */
     private function view(){
