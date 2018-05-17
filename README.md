@@ -25,8 +25,6 @@ Pretty annoying isn't ? Well `LogtrackerBundle` will make your life easier by di
     log_tracker:
         app_name: 'Your app name'
         sender_mail: 'your_mail@company.com'
-        # this option is removed in the version 1.2.0
-        handler_text: 'Text will be displayed when LogTrackerBundle handle the error'
         recipients: ['mail1@company.com', 'mail2@company.com'] #you can add as much as you want of addresses
     ```
 ### How it works
