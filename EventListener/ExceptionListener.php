@@ -2,6 +2,7 @@
 namespace SBC\LogTrackerBundle\EventListener;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
@@ -56,8 +57,20 @@ class ExceptionListener
 
             $this->mailer->send($message, $failures);
 
-            $response = new Response();
-            $response->setContent($this->view());
+            $response = null;
+            if($configuration['response'] == 'twig'){
+                $response = new Response();
+                $response->setContent($this->view());
+            }elseif($configuration['response'] == 'json'){
+                $response = new JsonResponse(array(
+                    'success' => false,
+                    'message' => 'An unexpected error has occured and an error report has been sent to us to fix this as soon as possible',
+                    'exception' => $exception->getMessage(),
+                    'exception_trace' => $exception->getTrace(),
+                ));
+                $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+            }
+
 
             $event->setResponse($response);
         }
