@@ -66,7 +66,6 @@ class ExceptionListener
                     'success' => false,
                     'message' => 'An unexpected error has occured and an error report has been sent to us to fix this as soon as possible',
                     'exception' => $exception->getMessage(),
-                    'exception_trace' => $exception->getTrace(),
                 ));
                 $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
             }
