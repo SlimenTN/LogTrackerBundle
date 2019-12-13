@@ -31,6 +31,8 @@ Pretty annoying isn't ? Well `LogtrackerBundle` will make your life easier by di
         # 'twig' if you want to display a twig page
         # 'json' if you want to return a json response (in case of API)
         response:   'twig'
+        # choose which exception code to exclude from the listener (optional)
+        exclude_exceptions: [404, 403, ...]
     ```
 ### How it works
 In **production** mode `LogTrackerBundle` will catch any type of exception (except `NotFoundException` assuming that it will be handled to display **404 Not Found** page)
