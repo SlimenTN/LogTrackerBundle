@@ -25,16 +25,28 @@ class Configuration implements ConfigurationInterface
          * app_name: The name of the application
          * sender_mail: Email of the sender of this application (Without it Swift_Mailer won't work)
          * recipients: List of mails that will receive notification when an exception rise
+         * exclude_exceptions: List of excluded exceptions who will be managed by LogTrackerBundle
          */
         $rootNode
             ->children()
+
                 ->scalarNode('app_name')->end()
                 ->scalarNode('sender_mail')->end()
+
                 ->arrayNode('recipients')
                     ->info('List of mails that will receive a notification on the rise of any exception.')
                     ->prototype('scalar')->end()
                 ->end()
-                ->enumNode('response')->values(['twig', 'json'])->defaultValue('twig')->end()
+
+                ->arrayNode('exclude_exceptions')
+                    ->info('List of excluded exceptions.')
+                    ->prototype('integer')->end()
+                ->end()
+
+                ->enumNode('response')
+                    ->values(['twig', 'json'])->defaultValue('twig')
+                ->end()
+
             ->end();
 
         return $treeBuilder;
