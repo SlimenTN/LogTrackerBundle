@@ -5,6 +5,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 
 class ExceptionListener
 {
@@ -34,7 +35,7 @@ class ExceptionListener
             $configuration = $this->container->getParameter('log_tracker');
             $excludeExceptions = $configuration['exclude_exceptions'];
 
-            if(! in_array($statusCode, $excludeExceptions)){
+            if(! in_array($statusCode, $excludeExceptions) || $statusCode === null){
                 $this->handleException($exception, $event, $configuration);
             }
         }
@@ -52,13 +53,13 @@ class ExceptionListener
      * @return mixed
      */
     private function getStatusCode(\Exception $exception){
-        $reflection = new \ReflectionObject($exception);
-        // note : $reflection->getProperty('statusCode')
-        // will not work because statusCode is a property
-        // related to Symfony\Component\HttpKernel\Exception\HttpException
-        $property = $reflection->getParentClass()->getProperty('statusCode');
-        $property->setAccessible('public');
-        return $property->getValue($exception);
+
+        if($exception instanceof HttpExceptionInterface){
+            return $exception->getStatusCode();
+        } else{
+            // Exception hasn't been implemented the HttpExceptionInterface logic
+            return null;
+        }
     }
 
     /**
