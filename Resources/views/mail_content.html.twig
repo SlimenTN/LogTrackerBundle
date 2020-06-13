@@ -5,7 +5,27 @@
     {% if app.user %}
     <strong>User:</strong> {{ app.user.username }}
     {% endif %}
-    <strong>Content:</strong> {{ exception.message }}<br><br>
-    <strong>Trace:</strong> {{ exception.traceAsString }}
+    <strong>Content:</strong> {{ exception.message }}<br>
+    <hr>
+    <strong>Data:</strong>
+    <pre>
+        <table style="border-collapse: collapse;">
+        <tr>
+            <td width="10%" style="border: solid 1px black;padding: 5px">POST</td>
+            <td style="border: solid 1px black;padding: 5px">{{ data['POST'] }}</td>
+        </tr>
+        <tr>
+            <td width="10%" style="border: solid 1px black;padding: 5px">GET</td>
+            <td style="border: solid 1px black;padding: 5px">{{ data['GET'] }}</td>
+        </tr>
+        <tr>
+            <td width="10%" style="border: solid 1px black;padding: 5px">JSON</td>
+            <td style="border: solid 1px black;padding: 5px">{{ data['JSON'] }}</td>
+        </tr>
+    </table>
+    </pre>
+    <hr>
+    <strong>Trace:</strong> <br>
+    {{ exception.traceAsString }}
 </body>
 </html>

@@ -3,6 +3,7 @@ namespace SBC\LogTrackerBundle\EventListener;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
@@ -78,6 +79,7 @@ class ExceptionListener
         $content = $this->container->get('twig')->render('@LogTracker/mail_content.html.twig', array(
             'exception_url' => $url,
             'exception' => $exception,
+            'data' => $this->collectRequestData($event->getRequest()),
         ));
 
         $message = \Swift_Message::newInstance()
@@ -105,6 +107,28 @@ class ExceptionListener
         }
 
         $event->setResponse($response);
+    }
+
+    /**
+     * @param Request $request
+     * @return array
+     */
+    private function collectRequestData(Request $request){
+        return [
+            'POST' => json_encode($request->request->all()),
+            'GET' => json_encode($request->query->all()),
+            'JSON' => $this->isJsonApplication($request) ? $request->getContent() : null,
+        ];
+    }
+
+    /**
+     * Check if the response is a json application
+     * @param Request $request
+     * @return bool
+     */
+    private function isJsonApplication(Request $request){
+        $content = $request->headers->get('content-type');
+        return (strtolower($content) === 'application/json');
     }
 
 }
